@@ -17,7 +17,7 @@
     <meta name="msapplication-TileColor" content="#2b5797">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="{{ site.name }}">
+    <meta name="apple-mobile-web-app-title" content="{{ site.translated.header_text }}">
     <meta name="og:type" content="website">
     {% get_available_languages as LANGUAGES %}
     {% for lang_code, language_name in LANGUAGES %}
@@ -31,7 +31,9 @@
   {% block stylesheet %}{% endblock stylesheet %}
 
   {% block meta_tags %}
-    <meta property="og:title" content="{{ site.name }}">
+    <meta property="og:title" content="{{ site.settings.translated.header_text }}">
+    <meta property="og:description" content="{{ site.settings.translated.description }}">
+    <meta name="description" content="{{ site.settings.translated.description }}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:image" content="{% static "images/block1.png" %}">
   {% endblock meta_tags %}

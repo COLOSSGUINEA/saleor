@@ -710,3 +710,9 @@ def create_translations():
         AttributeChoiceValueTranslation.objects.create(
             language_code='pl', name='Wartość %s' % value.pk,
             attribute_choice_value=value)
+
+    for site_set in SiteSettings.objects.all():
+        SiteSettingsTranslation.objects.create(
+            site_settings=site_set, language_code='pl',
+            header_text='Tekst nagłówka po polsku %s' % site_set.pk,
+            description='Opis strony, tez po polsku %s' % site_set.pk)
