@@ -17,6 +17,7 @@ from saleor.product.thumbnails import create_product_thumbnails
 from saleor.product.utils import (
     allocate_stock, deallocate_stock, decrease_stock, increase_stock)
 from saleor.product.utils.availability import get_product_availability_status
+from saleor.product.utils.attributes import get_product_attributes_data
 from saleor.product.utils.variants_picker import get_variant_picker_data
 
 from .utils import filter_products_by_attribute
@@ -630,3 +631,29 @@ def test_product_json_deserialization(default_category, product_type):
     product_deserialized.save()
     product = models.Product.objects.first()
     assert product.price == Money(Decimal('35.98'), 'USD')
+
+
+def test_variant_picker_data_with_translations(
+        product, translated_variant, settings):
+    settings.LANGUAGE_CODE = 'fr'
+    variant_picker_data = get_variant_picker_data(product)
+    attribute = variant_picker_data['variantAttributes'][0]
+    assert attribute['name'] == translated_variant.name
+
+
+def test_get_product_attributes_data_translation(
+        product, settings, translated_product_attribute):
+    settings.LANGUAGE_CODE = 'fr'
+    attributes_data = get_product_attributes_data(product)
+    attributes_keys = [attr.name for attr in attributes_data.keys()]
+    assert translated_product_attribute.name in attributes_keys
+
+
+def test_attribute_choice_value_translation_fr(
+        db, settings, product, attribute_choice_translation_fr):
+    attribute = product.product_type.product_attributes.first()
+    choice = attribute.values.first()
+    assert choice.translated.name == 'Red'
+
+    settings.LANGUAGE_CODE = 'fr'
+    assert choice.translated.name == 'French name'
