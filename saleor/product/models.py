@@ -44,17 +44,12 @@ class Category(MPTTModel, SeoModel):
         return self.name
 
     def get_absolute_url(self, ancestors=None):
-        return reverse('product:category',
-                       kwargs={'path': self.get_full_path(ancestors),
-                               'category_id': self.id})
+        return reverse(
+            'product:category',
+            kwargs={'slug': self.get_slug(), 'category_id': self.id})
 
-    def get_full_path(self, ancestors=None):
-        if not self.parent_id:
-            return self.slug
-        if not ancestors:
-            ancestors = self.get_ancestors()
-        nodes = [node for node in ancestors] + [self]
-        return '/'.join([node.slug for node in nodes])
+    def get_slug(self):
+        return slugify(smart_text(unidecode(self.name)))
 
 
 class CategoryTranslation(SeoModelTranslation):
