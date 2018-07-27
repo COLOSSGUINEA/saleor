@@ -4,10 +4,10 @@ from decimal import Decimal
 from unittest.mock import patch
 
 import pytest
+
 from django.core import serializers
 from django.urls import reverse
 from prices import Money, TaxedMoney, TaxedMoneyRange
-
 from saleor.checkout import utils
 from saleor.checkout.models import Cart
 from saleor.checkout.utils import add_variant_to_cart
@@ -16,8 +16,8 @@ from saleor.product import ProductAvailabilityStatus, models
 from saleor.product.thumbnails import create_product_thumbnails
 from saleor.product.utils import (
     allocate_stock, deallocate_stock, decrease_stock, increase_stock)
-from saleor.product.utils.availability import get_product_availability_status
 from saleor.product.utils.attributes import get_product_attributes_data
+from saleor.product.utils.availability import get_product_availability_status
 from saleor.product.utils.variants_picker import get_variant_picker_data
 
 from .utils import filter_products_by_attribute
@@ -198,7 +198,8 @@ def test_adding_to_cart_with_current_user_token(
 
 
 def test_adding_to_cart_with_another_user_token(
-        admin_user, admin_client, product, customer_user, request_cart_with_item):
+        admin_user, admin_client, product, customer_user,
+        request_cart_with_item):
     client = admin_client
     key = utils.COOKIE_NAME
     request_cart_with_item.user = customer_user
@@ -609,7 +610,7 @@ def test_product_json_deserialization(default_category, product_type):
         "pk": 60,
         "fields": {{
             "seo_title": null,
-            "seo_description": "Future almost cup national. Study left manage we else.",
+            "seo_description": "Future almost cup national.",
             "product_type": {product_type_pk},
             "name": "Kelly-Clark",
             "description": "Future almost cup national",
@@ -617,7 +618,7 @@ def test_product_json_deserialization(default_category, product_type):
             "price": "35.98",
             "available_on": null,
             "is_published": true,
-            "attributes": "{{\\"9\\": \\"24\\", \\"10\\": \\"26\\", \\"11\\": \\"29\\"}}",
+            "attributes": "{{\\"9\\": \\"24\\", \\"10\\": \\"26\\"}}",
             "updated_at": "2018-07-19T13:30:24.195Z",
             "is_featured": false,
             "charge_taxes": true,
@@ -650,7 +651,7 @@ def test_get_product_attributes_data_translation(
 
 
 def test_attribute_choice_value_translation_fr(
-        db, settings, product, attribute_choice_translation_fr):
+        settings, product, attribute_choice_translation_fr):
     attribute = product.product_type.product_attributes.first()
     choice = attribute.values.first()
     assert choice.translated.name == 'Red'
