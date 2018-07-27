@@ -6,8 +6,8 @@ from django.urls import reverse
 from django.utils.translation import pgettext_lazy
 
 from ..core.utils import build_absolute_uri
-from ..seo.models import SeoModel
-from ..product.utils.translations import TranslationProxy
+from ..seo.models import SeoModel, SeoModelTranslation
+from ..core.utils.translations import TranslationProxy
 
 
 class PageQuerySet(models.QuerySet):
@@ -45,7 +45,7 @@ class Page(SeoModel):
         return build_absolute_uri(self.get_absolute_url())
 
 
-class PageTranslation(models.Model):
+class PageTranslation(SeoModelTranslation):
     language_code = models.CharField(max_length=50)
     page = models.ForeignKey(
         Page, related_name='translations', on_delete=models.CASCADE)

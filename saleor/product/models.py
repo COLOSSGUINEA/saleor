@@ -21,9 +21,9 @@ from versatileimagefield.fields import PPOIField, VersatileImageField
 from ..core.exceptions import InsufficientStock
 from ..core.models import SortableModel
 from ..core.utils.taxes import DEFAULT_TAX_RATE_NAME, apply_tax_to_price
+from ..core.utils.translations import TranslationProxy
 from ..discount.utils import calculate_discounted_price
-from ..seo.models import SeoModel
-from .utils.translations import TranslationProxy
+from ..seo.models import SeoModel, SeoModelTranslation
 
 
 class Category(MPTTModel, SeoModel):
@@ -57,7 +57,7 @@ class Category(MPTTModel, SeoModel):
         return '/'.join([node.slug for node in nodes])
 
 
-class CategoryTranslation(models.Model):
+class CategoryTranslation(SeoModelTranslation):
     language_code = models.CharField(max_length=50)
     category = models.ForeignKey(
         Category, related_name='translations', on_delete=models.CASCADE)
@@ -180,7 +180,7 @@ class Product(SeoModel):
         return TaxedMoneyRange(start=price, stop=price)
 
 
-class ProductTranslation(models.Model):
+class ProductTranslation(SeoModelTranslation):
     language_code = models.CharField(max_length=50)
     product = models.ForeignKey(
         Product, related_name='translations', on_delete=models.CASCADE)
@@ -419,7 +419,7 @@ class Collection(SeoModel):
             kwargs={'pk': self.id, 'slug': self.slug})
 
 
-class CollectionTranslation(models.Model):
+class CollectionTranslation(SeoModelTranslation):
     language_code = models.CharField(max_length=50)
     collection = models.ForeignKey(
         Collection, related_name='translations',

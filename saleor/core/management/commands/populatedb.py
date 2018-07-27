@@ -52,11 +52,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.make_database_faster()
-        # create_images = not options['withoutimages']
+        create_images = not options['withoutimages']
         # for msg in create_shipping_methods():
         #     self.stdout.write(msg)
-        # create_products_by_schema(self.placeholders_dir, 10, create_images,
-        #                           stdout=self.stdout)
+        # create_products_by_schema(
+        #     self.placeholders_dir, 10, create_images, stdout=self.stdout)
         # for msg in create_product_sales(5):
         #     self.stdout.write(msg)
         # for msg in create_vouchers():

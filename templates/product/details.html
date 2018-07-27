@@ -12,16 +12,16 @@
 
 {% block title %}
   {% if product.seo_title %}
-    {{ product.seo_title }}
+    {{ product.translated.seo_title }}
   {% else %}
-    {{ product.name }} - {{ block.super }}
+    {{ product.translated.name }} - {{ block.super }}
   {% endif %}
 {% endblock %}
 
 {% block meta_tags %}
-  <meta property="og:title" content="{{ product.seo_title|default:product.translated.name }}">
-  <meta property="og:description" content="{{ product.seo_description|default:"" }}">
-  <meta name="description" content="{{ product.seo_description|default:"" }}">
+  <meta property="og:title" content="{{ product.translated.seo_title|default:product.translated.name }}">
+  <meta property="og:description" content="{{ product.translated.seo_description|default:"" }}">
+  <meta name="description" content="{{ product.translated.seo_description|default:"" }}">
 
   {% build_absolute_uri request=request location=product.get_absolute_url as product_url %}
   <meta property="og:url" content="{{ product_url }}">
