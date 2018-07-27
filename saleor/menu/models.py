@@ -6,6 +6,7 @@ from mptt.models import MPTTModel
 from ..core.models import SortableModel
 from ..page.models import Page
 from ..product.models import Category, Collection
+from ..product.utils.translations import TranslationProxy
 
 
 class Menu(models.Model):
@@ -39,6 +40,7 @@ class MenuItem(MPTTModel, SortableModel):
 
     objects = models.Manager()
     tree = TreeManager()
+    translated = TranslationProxy()
 
     class Meta:
         ordering = ('sort_order',)
@@ -79,3 +81,19 @@ class MenuItem(MPTTModel, SortableModel):
     def get_url(self):
         linked_object = self.linked_object
         return linked_object.get_absolute_url() if linked_object else self.url
+
+
+class MenuItemTranslation(models.Model):
+    language_code = models.CharField(max_length=50)
+    menu_item = models.ForeignKey(
+        MenuItem, related_name='translations', on_delete=models.CASCADE)
+    name = models.CharField(max_length=128)
+
+    def __repr__(self):
+        class_ = type(self)
+        return '<%s.%s(pk=%r, name=%r, menu_item_pk=%r)>' % (
+            class_.__module__, class_.__name__, self.pk, self.name,
+            self.menu_item_pk)
+
+    def __str__(self):
+        return self.name

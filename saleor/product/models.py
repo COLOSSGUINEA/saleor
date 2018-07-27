@@ -358,7 +358,7 @@ class AttributeChoiceValueTranslation(models.Model):
 
     def __repr__(self):
         class_ = type(self)
-        return '<%s.%s(pk=%r, name=%r, attribute_chiuce_value_pk=%r)>' % (
+        return '<%s.%s(pk=%r, name=%r, attribute_choice_value_pk=%r)>' % (
             class_.__module__, class_.__name__, self.pk, self.name,
             self.attribute_choice_value_id)
 
