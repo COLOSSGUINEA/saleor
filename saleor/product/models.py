@@ -46,10 +46,7 @@ class Category(MPTTModel, SeoModel):
     def get_absolute_url(self):
         return reverse(
             'product:category',
-            kwargs={'slug': self.get_slug(), 'category_id': self.id})
-
-    def get_slug(self):
-        return slugify(smart_text(unidecode(self.name)))
+            kwargs={'slug': self.slug, 'category_id': self.id})
 
 
 class CategoryTranslation(SeoModelTranslation):

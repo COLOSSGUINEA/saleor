@@ -294,7 +294,7 @@ def test_product_filter_before_filtering(
     url = reverse(
         'product:category',
         kwargs={
-            'path': default_category.slug,
+            'slug': default_category.slug,
             'category_id': default_category.pk})
 
     response = authorized_client.get(url)
@@ -311,7 +311,7 @@ def test_product_filter_product_exists(authorized_client, product,
     url = reverse(
         'product:category',
         kwargs={
-            'path': default_category.slug,
+            'slug': default_category.slug,
             'category_id': default_category.pk})
     data = {'price_0': [''], 'price_1': ['20']}
 
@@ -325,7 +325,7 @@ def test_product_filter_product_does_not_exist(
     url = reverse(
         'product:category',
         kwargs={
-            'path': default_category.slug,
+            'slug': default_category.slug,
             'category_id': default_category.pk})
     data = {'price_0': ['20'], 'price_1': ['']}
 
@@ -343,7 +343,7 @@ def test_product_filter_form(authorized_client, product,
     url = reverse(
         'product:category',
         kwargs={
-            'path': default_category.slug,
+            'slug': default_category.slug,
             'category_id': default_category.pk})
 
     response = authorized_client.get(url)
@@ -362,7 +362,7 @@ def test_product_filter_sorted_by_price_descending(
     url = reverse(
         'product:category',
         kwargs={
-            'path': default_category.slug,
+            'slug': default_category.slug,
             'category_id': default_category.pk})
     data = {'sort_by': '-price'}
 
@@ -376,7 +376,7 @@ def test_product_filter_sorted_by_wrong_parameter(
     url = reverse(
         'product:category',
         kwargs={
-            'path': default_category.slug,
+            'slug': default_category.slug,
             'category_id': default_category.pk})
     data = {'sort_by': 'aaa'}
 
@@ -437,11 +437,10 @@ def test_include_products_from_subcategories_in_main_view(
         name='sub', slug='test', parent=default_category)
     product.category = subcategory
     product.save()
-    path = default_category.get_full_path()
     # URL to parent category view
     url = reverse(
         'product:category', kwargs={
-            'path': path, 'category_id': default_category.pk})
+            'slug': default_category.slug, 'category_id': default_category.pk})
     response = authorized_client.get(url)
     assert product in response.context_data['products'][0]
 

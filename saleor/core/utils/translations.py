@@ -4,9 +4,9 @@ from django.utils.translation import get_language
 class TranslationWrapper(object):
     def __init__(self, instance, locale):
         self.instance = instance
-        self.translation = next(
-            (t for t in instance.translations.all()
-                if t.language_code == locale), None)
+        self.translation = next((
+            t for t in instance.translations.all()
+            if t.language_code == locale), None)
 
     def __getattr__(self, item):
         if all([
