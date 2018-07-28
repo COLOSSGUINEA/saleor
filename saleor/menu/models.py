@@ -4,9 +4,9 @@ from mptt.managers import TreeManager
 from mptt.models import MPTTModel
 
 from ..core.models import SortableModel
+from ..core.utils.translations import TranslationProxy
 from ..page.models import Page
 from ..product.models import Category, Collection
-from ..core.utils.translations import TranslationProxy
 
 
 class Menu(models.Model):
@@ -84,7 +84,7 @@ class MenuItem(MPTTModel, SortableModel):
 
 
 class MenuItemTranslation(models.Model):
-    language_code = models.CharField(max_length=50)
+    language_code = models.CharField(max_length=10)
     menu_item = models.ForeignKey(
         MenuItem, related_name='translations', on_delete=models.CASCADE)
     name = models.CharField(max_length=128)

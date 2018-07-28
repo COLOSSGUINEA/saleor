@@ -7,8 +7,8 @@ from ...utils import create_superuser
 from ...utils.random_data import (
     add_address_to_admin, create_collections_by_schema, create_menus,
     create_orders, create_page, create_product_sales,
-    create_products_by_schema, create_shipping_methods, create_users,
-    create_vouchers, set_featured_products, create_translations)
+    create_products_by_schema, create_shipping_methods, create_translations,
+    create_users, create_vouchers, set_featured_products)
 
 
 class Command(BaseCommand):

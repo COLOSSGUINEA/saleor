@@ -40,7 +40,7 @@ class SiteSettings(models.Model):
 
 
 class SiteSettingsTranslation(models.Model):
-    language_code = models.CharField(max_length=50)
+    language_code = models.CharField(max_length=10)
     site_settings = models.ForeignKey(
         SiteSettings, related_name='translations', on_delete=models.CASCADE)
     header_text = models.CharField(max_length=200, blank=True)

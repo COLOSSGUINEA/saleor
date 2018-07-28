@@ -43,7 +43,7 @@ class Category(MPTTModel, SeoModel):
     def __str__(self):
         return self.name
 
-    def get_absolute_url(self, ancestors=None):
+    def get_absolute_url(self):
         return reverse(
             'product:category',
             kwargs={'slug': self.get_slug(), 'category_id': self.id})
@@ -53,7 +53,7 @@ class Category(MPTTModel, SeoModel):
 
 
 class CategoryTranslation(SeoModelTranslation):
-    language_code = models.CharField(max_length=50)
+    language_code = models.CharField(max_length=10)
     category = models.ForeignKey(
         Category, related_name='translations', on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
@@ -176,7 +176,7 @@ class Product(SeoModel):
 
 
 class ProductTranslation(SeoModelTranslation):
-    language_code = models.CharField(max_length=50)
+    language_code = models.CharField(max_length=10)
     product = models.ForeignKey(
         Product, related_name='translations', on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
@@ -272,7 +272,7 @@ class ProductVariant(models.Model):
 
 
 class ProductVariantTranslation(models.Model):
-    language_code = models.CharField(max_length=50)
+    language_code = models.CharField(max_length=10)
     product_variant = models.ForeignKey(
         ProductVariant, related_name='translations', on_delete=models.CASCADE)
     name = models.CharField(max_length=255, blank=True)
@@ -309,7 +309,7 @@ class ProductAttribute(models.Model):
 
 
 class ProductAttributeTranslation(models.Model):
-    language_code = models.CharField(max_length=50)
+    language_code = models.CharField(max_length=10)
     product_attribute = models.ForeignKey(
         ProductAttribute, related_name='translations',
         on_delete=models.CASCADE)
@@ -345,7 +345,7 @@ class AttributeChoiceValue(SortableModel):
 
 
 class AttributeChoiceValueTranslation(models.Model):
-    language_code = models.CharField(max_length=50)
+    language_code = models.CharField(max_length=10)
     attribute_choice_value = models.ForeignKey(
         AttributeChoiceValue, related_name='translations',
         on_delete=models.CASCADE)
@@ -415,7 +415,7 @@ class Collection(SeoModel):
 
 
 class CollectionTranslation(SeoModelTranslation):
-    language_code = models.CharField(max_length=50)
+    language_code = models.CharField(max_length=10)
     collection = models.ForeignKey(
         Collection, related_name='translations',
         on_delete=models.CASCADE)
