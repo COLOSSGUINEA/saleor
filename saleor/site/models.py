@@ -48,8 +48,8 @@ class SiteSettingsTranslation(models.Model):
 
     def __repr__(self):
         class_ = type(self)
-        return '<%s.%s(pk=%r, site_settings_pk=%r)>' % (
-            class_.__module__, class_.__name__, self.pk, self.site_settings_id)
+        return '%s(pk=%r, site_settings_pk=%r)' % (
+            class_.__name__, self.pk, self.site_settings_id)
 
     def __str__(self):
         return self.site_settings.site.name

@@ -61,9 +61,8 @@ class CategoryTranslation(SeoModelTranslation):
 
     def __repr__(self):
         class_ = type(self)
-        return '<%s.%s(pk=%r, name=%r, category_pk=%r)>' % (
-            class_.__module__, class_.__name__, self.pk, self.name,
-            self.category_id)
+        return '%s(pk=%r, name=%r, category_pk=%r)' % (
+            class_.__name__, self.pk, self.name, self.category_id)
 
 
 class ProductType(models.Model):
@@ -184,9 +183,8 @@ class ProductTranslation(SeoModelTranslation):
 
     def __repr__(self):
         class_ = type(self)
-        return '<%s.%s(pk=%r, name=%r, product_pk=%r)>' % (
-            class_.__module__, class_.__name__, self.pk, self.name,
-            self.product_id)
+        return '%s(pk=%r, name=%r, product_pk=%r)' % (
+            class_.__name__, self.pk, self.name, self.product_id)
 
 
 class ProductVariant(models.Model):
@@ -278,9 +276,8 @@ class ProductVariantTranslation(models.Model):
 
     def __repr__(self):
         class_ = type(self)
-        return '<%s.%s(pk=%r, name=%r, variant_pk=%r)>' % (
-            class_.__module__, class_.__name__, self.pk, self.name,
-            self.product_variant_id)
+        return '%s(pk=%r, name=%r, variant_pk=%r)' % (
+            class_.__name__, self.pk, self.name, self.product_variant_id)
 
     def __str__(self):
         return self.name or str(self.product_variant)
@@ -314,9 +311,8 @@ class ProductAttributeTranslation(models.Model):
 
     def __repr__(self):
         class_ = type(self)
-        return '<%s.%s(pk=%r, name=%r, attribute_pk=%r)>' % (
-            class_.__module__, class_.__name__, self.pk, self.name,
-            self.product_attribute_id)
+        return '%s(pk=%r, name=%r, attribute_pk=%r)' % (
+            class_.__name__, self.pk, self.name, self.product_attribute_id)
 
     def __str__(self):
         return self.name
@@ -350,8 +346,8 @@ class AttributeChoiceValueTranslation(models.Model):
 
     def __repr__(self):
         class_ = type(self)
-        return '<%s.%s(pk=%r, name=%r, attribute_choice_value_pk=%r)>' % (
-            class_.__module__, class_.__name__, self.pk, self.name,
+        return '%s(pk=%r, name=%r, attribute_choice_value_pk=%r)' % (
+            class_.__name__, self.pk, self.name,
             self.attribute_choice_value_id)
 
     def __str__(self):
@@ -420,9 +416,8 @@ class CollectionTranslation(SeoModelTranslation):
 
     def __repr__(self):
         class_ = type(self)
-        return '<%s.%s(pk=%r, name=%r, collection_pk=%r)>' % (
-            class_.__module__, class_.__name__, self.pk, self.name,
-            self.collection_id)
+        return '%s(pk=%r, name=%r, collection_pk=%r)' % (
+            class_.__name__, self.pk, self.name, self.collection_id)
 
     def __str__(self):
         return self.name

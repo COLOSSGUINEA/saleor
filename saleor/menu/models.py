@@ -91,9 +91,8 @@ class MenuItemTranslation(models.Model):
 
     def __repr__(self):
         class_ = type(self)
-        return '<%s.%s(pk=%r, name=%r, menu_item_pk=%r)>' % (
-            class_.__module__, class_.__name__, self.pk, self.name,
-            self.menu_item_pk)
+        return '%s(pk=%r, name=%r, menu_item_pk=%r)' % (
+            class_.__name__, self.pk, self.name, self.menu_item_id)
 
     def __str__(self):
         return self.name
