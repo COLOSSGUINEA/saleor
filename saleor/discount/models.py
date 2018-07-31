@@ -12,6 +12,7 @@ from django_prices.templatetags.prices_i18n import amount
 from prices import Money, fixed_discount, percentage_discount
 
 from . import DiscountValueType, VoucherApplyToProduct, VoucherType
+from ..core.utils.translations import TranslationProxy
 
 
 class NotApplicable(ValueError):
@@ -61,6 +62,7 @@ class Voucher(models.Model):
         decimal_places=settings.DEFAULT_DECIMAL_PLACES, null=True, blank=True)
 
     objects = VoucherQueryset.as_manager()
+    translated = TranslationProxy()
 
     def __str__(self):
         if self.name:
@@ -127,6 +129,12 @@ class Voucher(models.Model):
                 'Voucher not applicable',
                 'This offer is only valid for orders over %(amount)s.')
             raise NotApplicable(msg % {'amount': amount(limit)}, limit=limit)
+
+
+class VoucherTranslation(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
+    voucher = models.ForeignKey(
+        Voucher, related_name='translations', on_delete=models.CASCADE)
 
 
 class Sale(models.Model):

@@ -1,3 +1,7 @@
+import json
+
+from django.db.models import Q
+
 from ...page.models import Page
 from ...product.models import Category, Collection
 
@@ -16,3 +20,75 @@ def update_menu_item_linked_object(menu_item, linked_object):
         menu_item.page = linked_object
 
     return menu_item.save()
+
+
+def get_menu_item_as_dict(menu_item):
+    data = {}
+    if menu_item.linked_object:
+        data['url'] = menu_item.linked_object.get_absolute_url()
+    else:
+        data['url'] = menu_item.url
+    data['name'] = menu_item.name
+    data['translations'] = [
+        {'name': translated.name, 'language_code': translated.language_code}
+        for translated in menu_item.translations.all()]
+    return data
+
+
+def get_menu_json_content(menu):
+    # Items displayed at the top menu level
+    top_items = menu.items.filter(
+        parent=None).prefetch_related(
+            'category', 'page', 'collection',
+            'children__category', 'children__page', 'children__collection',
+            'children__children__category', 'children__children__page',
+            'children__children__collection')
+    menu_data = []
+    for item in top_items:
+        top_item_data = get_menu_item_as_dict(item)
+        top_item_data['child_items'] = []
+        children = item.children.all()
+        for child in children:
+            child_data = get_menu_item_as_dict(child)
+            grand_children = child.children.all()
+            grand_children_data = [
+                get_menu_item_as_dict(grand_child)
+                for grand_child in grand_children]
+            child_data['child_items'] = grand_children_data
+            top_item_data['child_items'].append(child_data)
+        menu_data.append(top_item_data)
+    return json.dumps(menu_data)
+
+
+def update_menus(menus_pk):
+    from ...menu.models import MenuItem, Menu
+
+    menus = Menu.objects.filter(pk__in=menus_pk)
+    for menu in menus:
+        update_menu(menu)
+
+
+def update_menu(menu):
+    menu.json_content = get_menu_json_content(menu)
+    menu.save(update_fields=['json_content'])
+
+
+def get_menus_that_needs_update(collection=None, categories=None, page=None):
+    from ...menu.models import MenuItem, Menu
+
+    """Returns PrimaryKeys of Menu instances that will be affected by
+    deleting one of the listed objects, therefore needs to be updated
+    afterwards.
+    """
+    if not any([page, collection, categories]):
+        return []
+    q = Q()
+    if collection is not None:
+        q = Q(collection=collection)
+    if categories is not None:
+        q = Q(category__in=categories)
+    if page is not None:
+        q = Q(page=page)
+    menus_to_be_updated = MenuItem.objects.filter(q).distinct().values_list(
+        'menu', flat=True)
+    return menus_to_be_updated

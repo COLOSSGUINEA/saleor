@@ -3,7 +3,6 @@ from io import BytesIO
 from unittest.mock import MagicMock, Mock
 
 import pytest
-
 from django.contrib.auth.models import Permission
 from django.contrib.sites.models import Site
 from django.core.files import File
@@ -17,10 +16,12 @@ from graphql_jwt.shortcuts import get_token
 from payments import FraudStatus, PaymentStatus
 from PIL import Image
 from prices import Money
+
 from saleor.account.models import Address, User
 from saleor.checkout import utils
 from saleor.checkout.models import Cart
 from saleor.checkout.utils import add_variant_to_cart
+from saleor.dashboard.menu.utils import update_menu
 from saleor.dashboard.order.utils import fulfill_order_line
 from saleor.discount.models import Sale, Voucher
 from saleor.menu.models import Menu, MenuItem
@@ -638,6 +639,7 @@ def menu_with_items(menu, default_category, collection):
         parent=menu_item)
     menu.items.create(
         name=collection.name, collection=collection, parent=menu_item)
+    update_menu(menu)
     return menu
 
 
