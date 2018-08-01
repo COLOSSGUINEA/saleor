@@ -23,6 +23,7 @@ from saleor.checkout.models import Cart
 from saleor.checkout.utils import add_variant_to_cart
 from saleor.dashboard.menu.utils import update_menu
 from saleor.dashboard.order.utils import fulfill_order_line
+from saleor.dashboard.menu.utils import update_menu
 from saleor.discount.models import Sale, Voucher
 from saleor.menu.models import Menu, MenuItem
 from saleor.order import OrderStatus
@@ -619,7 +620,7 @@ def model_form_class():
 @pytest.fixture
 def menu(db):
     # navbar menu object can be already created by default in migration
-    return Menu.objects.get_or_create(name='navbar')[0]
+    return Menu.objects.get_or_create(name='navbar', json_content={})[0]
 
 
 @pytest.fixture

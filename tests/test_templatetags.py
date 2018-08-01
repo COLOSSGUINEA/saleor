@@ -1,7 +1,6 @@
 import json
 
 from django.urls import reverse
-
 from saleor.core.templatetags.shop import get_sort_by_url, menu
 
 

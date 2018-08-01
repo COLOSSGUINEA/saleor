@@ -2,7 +2,6 @@
 {% load i18n %}
 {% load staticfiles %}
 {% load render_bundle from webpack_loader %}
-{% load shop %}
 {% load placeholder %}
 {% load translate_url from urls %}
 
@@ -156,7 +155,7 @@
     </div>
     <div class="navbar__menu container d-block">
       <nav class="navigation">
-        {% menu site_menu=site.settings.top_menu horizontal=True %}
+        {% include "menu.html" with menu_items=site.settings.top_menu.json_content horizontal=True %}
       </nav>
     </div>
   </header>
@@ -186,7 +185,7 @@
           </a>
         </div>
         <div class="col-md-3 col-sm-6">
-          {% menu site_menu=site.settings.bottom_menu %}
+          {% include "menu.html" with menu_items=site.settings.bottom_menu.json_content %}
         </div>
         <div class="col-md-3 col-sm-6">
           <ul>

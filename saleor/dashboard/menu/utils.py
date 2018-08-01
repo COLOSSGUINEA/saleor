@@ -2,6 +2,7 @@ import json
 
 from django.db.models import Q
 
+from ...menu.models import Menu, MenuItem
 from ...page.models import Page
 from ...product.models import Category, Collection
 
@@ -29,20 +30,23 @@ def get_menu_item_as_dict(menu_item):
     else:
         data['url'] = menu_item.url
     data['name'] = menu_item.name
-    data['translations'] = [
-        {'name': translated.name, 'language_code': translated.language_code}
-        for translated in menu_item.translations.all()]
+    data['translations'] = {
+        translated.language_code: {'name': translated.name}
+        for translated in menu_item.translations.all()}
     return data
 
 
-def get_menu_json_content(menu):
-    # Items displayed at the top menu level
+def get_menu_as_json(menu):
+    """Builds Tree-like structure from top menu items,
+    its children and its grandchildren.
+    """
     top_items = menu.items.filter(
         parent=None).prefetch_related(
             'category', 'page', 'collection',
             'children__category', 'children__page', 'children__collection',
             'children__children__category', 'children__children__page',
-            'children__children__collection')
+            'children__children__collection', 'translations',
+            'children__translations', 'children__children__translations')
     menu_data = []
     for item in top_items:
         top_item_data = get_menu_item_as_dict(item)
@@ -61,21 +65,17 @@ def get_menu_json_content(menu):
 
 
 def update_menus(menus_pk):
-    from ...menu.models import MenuItem, Menu
-
     menus = Menu.objects.filter(pk__in=menus_pk)
     for menu in menus:
         update_menu(menu)
 
 
 def update_menu(menu):
-    menu.json_content = get_menu_json_content(menu)
+    menu.json_content = get_menu_as_json(menu)
     menu.save(update_fields=['json_content'])
 
 
 def get_menus_that_needs_update(collection=None, categories=None, page=None):
-    from ...menu.models import MenuItem, Menu
-
     """Returns PrimaryKeys of Menu instances that will be affected by
     deleting one of the listed objects, therefore needs to be updated
     afterwards.
@@ -84,11 +84,11 @@ def get_menus_that_needs_update(collection=None, categories=None, page=None):
         return []
     q = Q()
     if collection is not None:
-        q = Q(collection=collection)
+        q |= Q(collection=collection)
     if categories is not None:
-        q = Q(category__in=categories)
+        q |= Q(category__in=categories)
     if page is not None:
-        q = Q(page=page)
+        q |= Q(page=page)
     menus_to_be_updated = MenuItem.objects.filter(q).distinct().values_list(
         'menu', flat=True)
     return menus_to_be_updated

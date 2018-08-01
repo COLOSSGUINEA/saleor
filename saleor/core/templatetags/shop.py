@@ -26,9 +26,7 @@ def menu(site_menu=None, horizontal=False):
 
 @register.simple_tag
 def get_menu_item_name(menu_item, lang_code):
-    translated = [
-        item for item in menu_item['translations']
-        if item['language_code'] == lang_code]
+    translated = menu_item['translations'].get(lang_code)
     if translated:
         return translated['name']
     return menu_item['name']
