@@ -16,11 +16,11 @@ def get_sort_by_url(context, field, descending=False):
 
 
 @register.inclusion_tag('menu.html')
-def menu(site_menu=None, horizontal=False):
-    if not site_menu:
+def menu(menu_items=None, horizontal=False):
+    if not menu_items:
         return
     return {
-        'menu_items': json.loads(site_menu.json_content),
+        'menu_items': json.loads(menu_items),
         'horizontal': horizontal}
 
 

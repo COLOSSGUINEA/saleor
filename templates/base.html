@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 {% load i18n %}
-{% load staticfiles %}
-{% load render_bundle from webpack_loader %}
+{% load menu from shop %}
 {% load placeholder %}
+{% load render_bundle from webpack_loader %}
+{% load staticfiles %}
 {% load translate_url from urls %}
 
 <html lang="{{ LANGUAGE_CODE }}" class="no-js" data-shipping-options-url="{% url 'cart:shipping-options' %}" data-cart-summary-url="{% url 'cart:summary' %}">
@@ -155,7 +156,7 @@
     </div>
     <div class="navbar__menu container d-block">
       <nav class="navigation">
-        {% include "menu.html" with menu_items=site.settings.top_menu.json_content horizontal=True %}
+        {% menu menu_items=site.settings.top_menu.json_content horizontal=True %}
       </nav>
     </div>
   </header>
@@ -185,7 +186,7 @@
           </a>
         </div>
         <div class="col-md-3 col-sm-6">
-          {% include "menu.html" with menu_items=site.settings.bottom_menu.json_content %}
+          {% menu menu_items=site.settings.bottom_menu.json_content %}
         </div>
         <div class="col-md-3 col-sm-6">
           <ul>
