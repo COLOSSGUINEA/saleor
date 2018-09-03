@@ -29,11 +29,8 @@ class Category(MPTTModel, SeoModel):
     name = models.CharField(max_length=128)
     slug = models.SlugField(max_length=128)
     description = models.TextField(blank=True)
-    parent = models.ForeignKey(
-        'self', null=True, blank=True, related_name='children',
-        on_delete=models.CASCADE)
-    background_image = VersatileImageField(
-        upload_to='category-backgrounds', blank=True, null=True)
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='children', on_delete=models.CASCADE)
+    background_image = VersatileImageField(upload_to='category-backgrounds', blank=True, null=True)
 
     objects = models.Manager()
     tree = TreeManager()
@@ -58,10 +55,8 @@ class Category(MPTTModel, SeoModel):
 class ProductType(models.Model):
     name = models.CharField(max_length=128)
     has_variants = models.BooleanField(default=True)
-    product_attributes = models.ManyToManyField(
-        'ProductAttribute', related_name='product_types', blank=True)
-    variant_attributes = models.ManyToManyField(
-        'ProductAttribute', related_name='product_variant_types', blank=True)
+    product_attributes = models.ManyToManyField('ProductAttribute', related_name='product_types', blank=True)
+    variant_attributes = models.ManyToManyField('ProductAttribute', related_name='product_variant_types', blank=True)
     is_shipping_required = models.BooleanField(default=False)
     tax_rate = models.CharField(
         max_length=128, default=DEFAULT_TAX_RATE_NAME, blank=True)
@@ -87,23 +82,18 @@ class ProductQuerySet(models.QuerySet):
 
 
 class Product(SeoModel):
-    product_type = models.ForeignKey(
-        ProductType, related_name='products', on_delete=models.CASCADE)
+    product_type = models.ForeignKey(ProductType, related_name='products', on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
     description = models.TextField()
-    category = models.ForeignKey(
-        Category, related_name='products', on_delete=models.CASCADE)
-    price = MoneyField(
-        currency=settings.DEFAULT_CURRENCY, max_digits=12,
-        decimal_places=settings.DEFAULT_DECIMAL_PLACES)
+    category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
+    price = MoneyField(currency=settings.DEFAULT_CURRENCY, max_digits=12,decimal_places=settings.DEFAULT_DECIMAL_PLACES)
     available_on = models.DateField(blank=True, null=True)
     is_published = models.BooleanField(default=True)
     attributes = HStoreField(default={}, blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
     is_featured = models.BooleanField(default=False)
     charge_taxes = models.BooleanField(default=True)
-    tax_rate = models.CharField(
-        max_length=128, default=DEFAULT_TAX_RATE_NAME, blank=True)
+    tax_rate = models.CharField(max_length=128, default=DEFAULT_TAX_RATE_NAME, blank=True)
 
     objects = ProductQuerySet.as_manager()
 
