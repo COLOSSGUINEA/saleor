@@ -60,3 +60,4 @@ django-debug-toolbar-request-history
 pip-tools==2.0.2
 ipython==6.5.0
 python-amazon-simple-product-api==2.2.11
+python-decouple==3.1
