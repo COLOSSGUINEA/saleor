@@ -3,6 +3,7 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
 from amazon.api import AmazonAPI # https://github.com/yoavaviram/python-amazon-simple-product-api
 from saleor.product.models import Category, ProductType, Product
+from pprint import pprint
 
 
 class Command(BaseCommand):
@@ -11,7 +12,7 @@ class Command(BaseCommand):
     AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', None)
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', None)
     AWS_ASSOCIATE_TAG = os.environ.get('AWS_ASSOCIATE_TAG', None)
-    AWS_REGION = os.environ.get('AWS_ASSOCIATE_TAG', 'FR')
+    AWS_REGION = os.environ.get('AWS_REGION', 'FR')
 
     # the search index on amazon
     SearchIndex = (
@@ -96,7 +97,6 @@ class Command(BaseCommand):
             print('the given search index is not valide')
 
         if self.AWS_ACCESS_KEY_ID and self.AWS_SECRET_ACCESS_KEY and self.AWS_ASSOCIATE_TAG:
-            amazon = AmazonAPI(self.AWS_ACCESS_KEY_ID, self.AWS_SECRET_ACCESS_KEY, self.AWS_ASSOCIATE_TAG)
             products = amazon.search(Keywords=keyword, SearchIndex=index)
 
             for p in products:
