@@ -97,6 +97,7 @@ class Command(BaseCommand):
             print('the given search index is not valide')
 
         if self.AWS_ACCESS_KEY_ID and self.AWS_SECRET_ACCESS_KEY and self.AWS_ASSOCIATE_TAG:
+            amazon = AmazonAPI(self.AWS_ACCESS_KEY_ID, self.AWS_SECRET_ACCESS_KEY, self.AWS_ASSOCIATE_TAG)
             products = amazon.search(Keywords=keyword, SearchIndex=index)
 
             for p in products:
