@@ -7,6 +7,7 @@ import django_cache_url
 from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _, pgettext_lazy
 from django_prices.templatetags.prices_i18n import get_currency_fraction
+from decouple import config
 
 from . import __version__
 
@@ -24,6 +25,12 @@ def get_bool_from_env(name, default_value):
             raise ValueError(
                 '{} is an invalid value for {}'.format(value, name)) from e
     return default_value
+
+# Amazon Product Advertising API settings
+AMAZON_ACCESS_KEY = config('AMAZON_ACCESS_KEY')
+AMAZON_SECRET_KEY = config('AMAZON_SECRET_KEY')
+AMAZON_ASSOCIATE_TAG = config('AMAZON_ASSOCIATE_TAG')
+AMAZON_ASSOCIATE_REGION = config('AMAZON_ASSOCIATE_REGION')
 
 
 DEBUG = get_bool_from_env('DEBUG', True)
@@ -55,7 +62,7 @@ DATABASES = {
         conn_max_age=600)}
 
 
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Africa/Conakry'
 LANGUAGE_CODE = 'en'
 LANGUAGES = [
     ('bg', _('Bulgarian')),
@@ -160,7 +167,7 @@ TEMPLATES = [{
         'string_if_invalid': '<< MISSING VARIABLE "%s" >>' if DEBUG else ''}}]
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',

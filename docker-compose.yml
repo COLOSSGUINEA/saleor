@@ -30,8 +30,6 @@ services:
       - saleor-backend-tier
     volumes:
       - saleor-db:/var/lib/postgresql
-    ports:
-      - 5432:5432
     environment:
       - POSTGRES_USER=saleor
       - POSTGRES_PASSWORD=saleor
